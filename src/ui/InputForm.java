@@ -1,18 +1,24 @@
 package ui;
 
 import configs.Configs;
+import lombok.Getter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class InputForm extends JFrame {
 
-    private final Container inputFormContainer = super.getContentPane();
+    @Getter
+    private final Container inputFormContainer = super.getContentPane();  // https://projectlombok.org/features/GetterSetter
+    private JTextField textField;
 
     public InputForm() {
         this.setUpInputForm();
         this.setUpLabel();
         this.setUpTextLabel();
+        this.setUpSearchButton();
     }
 
     private void setUpInputForm() {
@@ -39,18 +45,38 @@ public class InputForm extends JFrame {
     }
 
     private void setUpTextLabel() {
-        JTextField textField = new JTextField(Configs.InputForm.TextField.columnsCount);
-        textField.setBounds(
+        this.textField = new JTextField(Configs.InputForm.TextField.columnsCount);
+        this.textField.setBounds(
                 Configs.InputForm.TextField.Bounds.x,
                 Configs.InputForm.TextField.Bounds.y,
                 Configs.InputForm.TextField.Bounds.width,
                 Configs.InputForm.TextField.Bounds.height
         );
 
-        this.inputFormContainer.add(textField);
+        this.inputFormContainer.add(this.textField);
     }
 
-    public Container getInputFormContainer() {
-        return this.inputFormContainer;
+    private void setUpSearchButton() {
+        JButton selectButton = new JButton(Configs.InputForm.SelectButton.name);
+        selectButton.addActionListener(new SelectButtonEventManager(this.textField));
+        this.inputFormContainer.add(selectButton);
     }
+
+    // https://metanit.com/java/tutorial/3.18.php
+    private record SelectButtonEventManager(JTextField inputField) implements ActionListener {
+
+        @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                String selectedCity = this.inputField.getText();
+
+                // TODO Here need to check info from weather API. If no DATA - show error message
+
+                JOptionPane.showMessageDialog(
+                        null,
+                        selectedCity,
+                        Configs.appName,
+                        JOptionPane.PLAIN_MESSAGE
+                );
+            }
+        }
 }

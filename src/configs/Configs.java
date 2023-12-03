@@ -1,24 +1,31 @@
 package configs;
 
 
+import java.awt.*;
+
 /**
  *  Represents all configs for "Weather Desktop" application.
  */
 public final class Configs {
 
+    public static String appName = "Weather Desktop";
+
+    // Get Display resolution
+    public static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
     public static final class Window {
         public static boolean windowVisibility = true;
 
         public static final class Bounds {
-            public static int x = 200;
-            public static int y = 250;
-            public static int height = 500;
-            public static int width = 400;
+            public static int x = screenSize.width / 2;
+            public static int y = screenSize.height / 2;
+            public static int height = 200;
+            public static int width = 300;
         }
 
         public static final class GridLayout {
-            public static int rows = 3;
-            public static int cols = 2;
+            public static int rows = 1;
+            public static int cols = 1;
             public static int hgap = 2;  // Горизонтальный отступ между элементами
             public static int vgap = 2;  // Вертикальный отступ между элементами
         }
@@ -27,7 +34,7 @@ public final class Configs {
     public static final class InputForm {
 
         public static final class GridLayout {
-            public static int rows = Window.GridLayout.rows;
+            public static int rows = 3;
             public static int cols = Window.GridLayout.cols;
             public static int hgap = Window.GridLayout.hgap;
             public static int vgap = Window.GridLayout.vgap;
@@ -54,5 +61,23 @@ public final class Configs {
                 public static int width = Window.Bounds.width - TextField.Bounds.x * 2;
             }
         }
+
+        public static final class SelectButton {
+            public static String name = "Search";
+        }
+    }
+
+    public static final class OpenWeatherAPI {
+        public static String URL = "https://api.openweathermap.org/data/2.5/weather?q=%s&appid=%s&units=metric";
+        public static String tokenEnvName = "openWeatherToken";
+        public static int successStatusCode = 200;
+
+        public static final class Error {
+            public static String key = "cod";
+            public static int code = 500;
+            public static String messageKey = "message";
+            public static String messageText = "Error with Open Weather API";
+        }
+
     }
 }
