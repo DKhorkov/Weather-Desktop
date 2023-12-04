@@ -2,11 +2,14 @@ package ui;
 
 import configs.Configs;
 import lombok.Getter;
+import openWeatherAPI.OpenWeatherAPI;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class InputForm extends JFrame {
 
@@ -68,15 +71,53 @@ public class InputForm extends JFrame {
         @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String selectedCity = this.inputField.getText();
-
-                // TODO Here need to check info from weather API. If no DATA - show error message
-
+                OpenWeatherAPI openWeatherAPI = new OpenWeatherAPI();
+                Map<String, Object> weather = openWeatherAPI.getWeather(selectedCity);
+                String message = this.getMessage(weather);
                 JOptionPane.showMessageDialog(
                         null,
-                        selectedCity,
+                        message,
                         Configs.appName,
                         JOptionPane.PLAIN_MESSAGE
                 );
             }
+
+        private String getMessage(Map<String, Object> weather) {
+            if ((int) weather.get(Configs.OpenWeatherAPI.statusKey) == Configs.OpenWeatherAPI.successStatusCode) {
+                return this.prepareSuccessMessage(weather);
+            } else {
+                return (String) weather.get(Configs.OpenWeatherAPI.Error.messageKey);
+            }
         }
+
+        private String prepareSuccessMessage(Map<String, Object> weather) {
+            Map<String, Object> main = (Map<String, Object>) weather.get(Configs.InputForm.ParseWeatherKeys.main);
+            Object temperature = main.get(Configs.InputForm.ParseWeatherKeys.temperature);
+            Object feelsLike = main.get(Configs.InputForm.ParseWeatherKeys.feelsLike);
+
+            ArrayList<Map<String, Object>> weatherInfo = (ArrayList<Map<String, Object>>) weather.get(
+                    Configs.InputForm.ParseWeatherKeys.weatherInfo
+            );
+            String weatherStatus = (String) weatherInfo.get(0).get(Configs.InputForm.ParseWeatherKeys.main);
+
+            Map<String, Object> wind = (Map<String, Object>) weather.get(Configs.InputForm.ParseWeatherKeys.wind);
+            Object windSpeed = wind.get(Configs.InputForm.ParseWeatherKeys.windSpeed);
+
+            return String.format(
+                    """
+                        Weather: %s
+                        Temperature: %s
+                        Feels like: %s
+                        Wind speed: %s
+                    """,
+                    weatherStatus,
+                    temperature,
+                    feelsLike,
+                    windSpeed
+            );
+        }
+    }
+
+
+
 }

@@ -33,17 +33,22 @@ public class OpenWeatherAPI {
         return dotenv.get(Configs.OpenWeatherAPI.tokenEnvName);
     }
 
+    /**
+     * Getting weather by request to Open Weather API
+     * @see <a href="https://zetcode.com/java/getpostrequest/">Requests in Java</a>
+     * @param city City to find weather for
+     * @return full weather info
+     */
     public Map<String, Object> getWeather(String city) {
-        String URL = String.format(Configs.OpenWeatherAPI.URL, city, this.token);
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(URL)).build();
-
         // TODO add logging
         try {
+            String URL = String.format(Configs.OpenWeatherAPI.URL, city, this.token);
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(URL)).build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             String rawWeather = response.body();
             return this.processRawWeather(rawWeather);
-        } catch (IOException | InterruptedException exception){
+        } catch (IOException | InterruptedException | IllegalArgumentException exception){
             return this.createFailureWeather(Configs.OpenWeatherAPI.Error.messageText);
         }
     }
@@ -63,7 +68,7 @@ public class OpenWeatherAPI {
         // TODO add logging
         try {
             // Using this syntax to get int type instead of Object
-            return (int) weather.get(Configs.OpenWeatherAPI.Error.key);
+            return (int) weather.get(Configs.OpenWeatherAPI.statusKey);
         } catch (ClassCastException e) {
             return Configs.OpenWeatherAPI.Error.code;
         }
@@ -80,7 +85,7 @@ public class OpenWeatherAPI {
 
     private Map<String, Object> createFailureWeather(String message) {
         return new HashMap<>() {{
-            put(Configs.OpenWeatherAPI.Error.key, Configs.OpenWeatherAPI.Error.code);
+            put(Configs.OpenWeatherAPI.statusKey, Configs.OpenWeatherAPI.Error.code);
             put(Configs.OpenWeatherAPI.Error.messageKey, message);
         }};
     }

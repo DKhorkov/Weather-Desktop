@@ -65,19 +65,28 @@ public final class Configs {
         public static final class SelectButton {
             public static String name = "Search";
         }
+
+        public static final class ParseWeatherKeys {
+            public static String main = "main";
+            public static String temperature = "temp";
+            public static String feelsLike = "feels_like";
+            public static String weatherInfo = "weather";
+            public static String wind = "wind";
+            public static String windSpeed = "speed";
+        }
     }
 
     public static final class OpenWeatherAPI {
         public static String URL = "https://api.openweathermap.org/data/2.5/weather?q=%s&appid=%s&units=metric";
         public static String tokenEnvName = "openWeatherToken";
+
+        public static String statusKey = "cod";
         public static int successStatusCode = 200;
 
         public static final class Error {
-            public static String key = "cod";
             public static int code = 500;
             public static String messageKey = "message";
-            public static String messageText = "Error with Open Weather API";
+            public static String messageText = "city not found";
         }
-
     }
 }
