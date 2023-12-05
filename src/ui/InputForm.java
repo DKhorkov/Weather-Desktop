@@ -18,9 +18,10 @@ public class InputForm extends JFrame {
     private JTextField textField;
 
     public InputForm() {
+        this.inputFormContainer.setBackground(Color.BLACK);
         this.setUpInputForm();
         this.setUpLabel();
-        this.setUpTextLabel();
+        this.setUpTextField();
         this.setUpSearchButton();
     }
 
@@ -37,6 +38,7 @@ public class InputForm extends JFrame {
 
     private void setUpLabel() {
         JLabel label = new JLabel(Configs.InputForm.Label.text);
+        label.setForeground(Color.WHITE);
         label.setBounds(
                 Configs.InputForm.Label.Bounds.x,
                 Configs.InputForm.Label.Bounds.y,
@@ -47,7 +49,7 @@ public class InputForm extends JFrame {
         this.inputFormContainer.add(label);
     }
 
-    private void setUpTextLabel() {
+    private void setUpTextField() {
         this.textField = new JTextField(Configs.InputForm.TextField.columnsCount);
         this.textField.setBounds(
                 Configs.InputForm.TextField.Bounds.x,
@@ -61,6 +63,8 @@ public class InputForm extends JFrame {
 
     private void setUpSearchButton() {
         JButton selectButton = new JButton(Configs.InputForm.SelectButton.name);
+        selectButton.setBackground(Color.YELLOW);
+        selectButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         selectButton.addActionListener(new SelectButtonEventManager(this.textField));
         this.inputFormContainer.add(selectButton);
     }
@@ -74,7 +78,10 @@ public class InputForm extends JFrame {
                 OpenWeatherAPI openWeatherAPI = new OpenWeatherAPI();
                 Map<String, Object> weather = openWeatherAPI.getWeather(selectedCity);
                 String message = this.getMessage(weather);
-                JOptionPane.showMessageDialog(
+                JOptionPane jOptionPane = new JOptionPane();
+                jOptionPane.setBackground(Color.BLACK);
+                jOptionPane.setForeground(Color.WHITE);
+                jOptionPane.showMessageDialog(
                         null,
                         message,
                         Configs.appName,
