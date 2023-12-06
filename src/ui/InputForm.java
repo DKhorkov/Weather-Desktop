@@ -1,7 +1,6 @@
 package ui;
 
 import configs.Configs;
-import lombok.Getter;
 import openWeatherAPI.OpenWeatherAPI;
 
 import javax.swing.*;
@@ -12,9 +11,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class InputForm extends JFrame {
-
-    @Getter
-    private final Container inputFormContainer = super.getContentPane();  // https://projectlombok.org/features/GetterSetter
+    private final Container inputFormContainer = super.getContentPane();
     private JTextField textField;
 
     public InputForm() {
@@ -23,6 +20,10 @@ public class InputForm extends JFrame {
         this.setUpLabel();
         this.setUpTextField();
         this.setUpSearchButton();
+    }
+
+    public Container getInputFormContainer() {
+        return this.inputFormContainer;
     }
 
     private void setUpInputForm() {
