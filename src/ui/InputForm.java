@@ -10,23 +10,35 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Map;
 
+
+/**
+ * Class represents Input form UI, where user chose city to find weather for.
+ * THis class also creates message reply with weather for chosen city in new UI window.
+ */
 public class InputForm extends JFrame {
     private final Container inputFormContainer = super.getContentPane();
     private JTextField textField;
 
     public InputForm() {
         this.inputFormContainer.setBackground(Color.BLACK);
-        this.setUpInputForm();
-        this.setUpLabel();
-        this.setUpTextField();
-        this.setUpSearchButton();
+        this.setupInputForm();
+        this.setupLabel();
+        this.setupTextField();
+        this.setupSearchButton();
     }
 
+    /**
+     * Base getter.
+     * @return Input Form container with objects for adding to main UI window.
+     */
     public Container getInputFormContainer() {
         return this.inputFormContainer;
     }
 
-    private void setUpInputForm() {
+    /**
+     * Configures Input Form UI.
+     */
+    private void setupInputForm() {
         this.inputFormContainer.setLayout(
                 new GridLayout(
                         Configs.InputForm.GridLayout.rows,
@@ -37,7 +49,10 @@ public class InputForm extends JFrame {
         );
     }
 
-    private void setUpLabel() {
+    /**
+     * Configures text label on input form with information for user.
+     */
+    private void setupLabel() {
         JLabel label = new JLabel(Configs.InputForm.Label.text);
         label.setForeground(Color.WHITE);
         label.setBounds(
@@ -50,7 +65,10 @@ public class InputForm extends JFrame {
         this.inputFormContainer.add(label);
     }
 
-    private void setUpTextField() {
+    /**
+     * Configures text field, in which city name will be set.
+     */
+    private void setupTextField() {
         this.textField = new JTextField(Configs.InputForm.TextField.columnsCount);
         this.textField.setBounds(
                 Configs.InputForm.TextField.Bounds.x,
@@ -62,7 +80,10 @@ public class InputForm extends JFrame {
         this.inputFormContainer.add(this.textField);
     }
 
-    private void setUpSearchButton() {
+    /**
+     * Configures "submit"-button, which starts logic for getting weather of chosen city.
+     */
+    private void setupSearchButton() {
         JButton selectButton = new JButton(Configs.InputForm.SelectButton.name);
         selectButton.setBackground(Color.YELLOW);
         selectButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -70,27 +91,42 @@ public class InputForm extends JFrame {
         this.inputFormContainer.add(selectButton);
     }
 
-    // https://metanit.com/java/tutorial/3.18.php
+    /**
+     * Event listener for "submit"-button.
+     * <p></p>
+     * @param inputField - field with city to get weather for.
+     * @see <a href="https://metanit.com/java/tutorial/3.18.php">Records in Java</a>
+     */
     private record SelectButtonEventManager(JTextField inputField) implements ActionListener {
 
+        /**
+         * Gets weather and shows it in new UI window.
+         */
         @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                String selectedCity = this.inputField.getText();
-                OpenWeatherAPI openWeatherAPI = new OpenWeatherAPI();
-                Map<String, Object> weather = openWeatherAPI.getWeather(selectedCity);
-                String message = this.getMessage(weather);
-                JOptionPane jOptionPane = new JOptionPane();
-                jOptionPane.setBackground(Color.BLACK);
-                jOptionPane.setForeground(Color.WHITE);
-                jOptionPane.showMessageDialog(
-                        null,
-                        message,
-                        Configs.appName,
-                        JOptionPane.PLAIN_MESSAGE
-                );
-            }
+        public void actionPerformed(ActionEvent actionEvent) {
+            String selectedCity = this.inputField.getText();
+            OpenWeatherAPI openWeatherAPI = new OpenWeatherAPI();
+            Map<String, Object> weather = openWeatherAPI.getWeather(selectedCity);
+            String message = this.checkWeatherStatusAndGetMessage(weather);
+            JOptionPane jOptionPane = new JOptionPane();
+            jOptionPane.setBackground(Color.BLACK);
+            jOptionPane.setForeground(Color.WHITE);
+            jOptionPane.showMessageDialog(
+                    null,
+                    message,
+                    Configs.appName,
+                    JOptionPane.PLAIN_MESSAGE
+            );
+        }
 
-        private String getMessage(Map<String, Object> weather) {
+        /**
+         * Checks is status cod of weather info is equal to "successStatusCode".
+         * If true, returns message with processed weather info, else returns message with error info.
+         * <p></p>
+         * @param weather info about weather in selected city.
+         * @return processed message with parsed weather info.
+         */
+        private String checkWeatherStatusAndGetMessage(Map<String, Object> weather) {
             if ((int) weather.get(Configs.OpenWeatherAPI.statusKey) == Configs.OpenWeatherAPI.successStatusCode) {
                 return this.prepareSuccessMessage(weather);
             } else {
@@ -98,6 +134,12 @@ public class InputForm extends JFrame {
             }
         }
 
+        /**
+         * Prepares message for user from not-empty weather-info Map.
+         * <p></p>
+         * @param weather Map with weather info from Open Weather API.
+         * @return processed message with parsed weather info.
+         */
         private String prepareSuccessMessage(Map<String, Object> weather) {
             Map<String, Object> main = (Map<String, Object>) weather.get(Configs.InputForm.ParseWeatherKeys.main);
             Object temperature = main.get(Configs.InputForm.ParseWeatherKeys.temperature);
@@ -125,7 +167,4 @@ public class InputForm extends JFrame {
             );
         }
     }
-
-
-
 }

@@ -33,10 +33,11 @@ public class OpenWeatherAPI {
     }
 
     /**
-     * Getting weather by request to Open Weather API
+     * Getting weather by request to Open Weather API.
+     * <p></p>
      * @see <a href="https://zetcode.com/java/getpostrequest/">Requests in Java</a>
-     * @param city City to find weather for
-     * @return full weather info
+     * @param city City to find weather for.
+     * @return full weather info.
      */
     public Map<String, Object> getWeather(String city) {
         // TODO add logging
@@ -52,6 +53,12 @@ public class OpenWeatherAPI {
         }
     }
 
+    /**
+     * Gets Open Weather API response and processes it to standard weather object.
+     * <p></p>
+     * @param rawWeather - Response from Open Weather API
+     * @return standard weather object.
+     */
     private Map<String, Object> processRawWeather(String rawWeather) {
         Map<String, Object> weather = new JSONObject(rawWeather).toMap();
         int statusCode = this.getStatusCode(weather);
@@ -63,6 +70,13 @@ public class OpenWeatherAPI {
         }
     }
 
+    /**
+     * Trying to get status code of getting weather for selected city by key.
+     * If no such key - returns base failure status code.
+     * <p></p>
+     * @param weather - Standard weather object
+     * @return status code of getting weather info
+     */
     private int getStatusCode(Map<String, Object> weather) {
         // TODO add logging
         try {
@@ -73,6 +87,13 @@ public class OpenWeatherAPI {
         }
     }
 
+    /**
+     * Trying to get error message by key.
+     * If no such key - returns base failure message.
+     * <p></p>
+     * @param weather - Standard weather object
+     * @return message with error info
+     */
     private String getMessage(Map<String, Object> weather) {
         // TODO add logging
         try {
@@ -82,6 +103,12 @@ public class OpenWeatherAPI {
         }
     }
 
+    /**
+     * Creates standard weather object with failure status code and message with error info.
+     * <p></p>
+     * @param message - message with error info
+     * @return Standard weather object
+     */
     private Map<String, Object> createFailureWeather(String message) {
         return new HashMap<>() {{
             put(Configs.OpenWeatherAPI.statusKey, Configs.OpenWeatherAPI.Error.code);

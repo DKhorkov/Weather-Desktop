@@ -13,6 +13,9 @@ public final class Configs {
     // Get Display resolution
     public static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
+    /**
+     * Configs for main UI window.
+     */
     public static final class Window {
         public static boolean windowVisibility = true;
 
@@ -31,6 +34,9 @@ public final class Configs {
         }
     }
 
+    /**
+     * Configs for InputForm UI.
+     */
     public static final class InputForm {
 
         public static final class GridLayout {
@@ -76,6 +82,9 @@ public final class Configs {
         }
     }
 
+    /**
+     * Configs for Open Weather API.
+     */
     public static final class OpenWeatherAPI {
         public static String URL = "https://api.openweathermap.org/data/2.5/weather?q=%s&appid=%s&units=metric";
         public static String tokenEnvName = "openWeatherToken";

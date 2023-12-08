@@ -14,18 +14,21 @@ import java.awt.*;
 public class Window extends JFrame {
 
     /**
-     * Добавляет слой. Созданные объекты нельзя просто забросить в программу, необходимо создать слой,
-     * на котором они будут расположены.
+     * Adds a layer. The created objects cannot simply be thrown into the program.
+     * It is necessary to create a layer on which they will be located.
      */
     private final Container windowContainer = super.getContentPane();
 
     public Window(String title) {
         super(title);  // setting title of our Window
-        this.setUpWindow();
+        this.setupWindow();
         this.run();
     }
 
-    private void setUpWindow() {
+    /**
+     * Configures main UI window with objects.
+     */
+    private void setupWindow() {
         // Setting size and position of window
         super.setBounds(
                 Configs.Window.Bounds.x,
@@ -34,7 +37,6 @@ public class Window extends JFrame {
                 Configs.Window.Bounds.height
         );
 
-        // Указываем систему расположения объектов. Выберем систему сетки (ряды + столбцы)
         this.windowContainer.setLayout(
                 new GridLayout(
                         Configs.Window.GridLayout.rows,
@@ -47,6 +49,10 @@ public class Window extends JFrame {
         super.setDefaultCloseOperation(super.EXIT_ON_CLOSE);  // exiting on close window
     }
 
+    /**
+     * Method with logics of app.
+     * Creates input form, adds it to main UI window.
+     */
     public void run() {
         InputForm inputForm = new InputForm();
         Container inputFormContainer = inputForm.getInputFormContainer();
