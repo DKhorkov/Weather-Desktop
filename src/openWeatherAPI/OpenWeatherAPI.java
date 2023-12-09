@@ -11,6 +11,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -20,6 +22,7 @@ import java.util.Map;
 public class OpenWeatherAPI {
 
     private final String token = this.getToken();
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     public OpenWeatherAPI() {}
 
@@ -40,7 +43,6 @@ public class OpenWeatherAPI {
      * @return full weather info.
      */
     public Map<String, Object> getWeather(String city) {
-        // TODO add logging
         try {
             String URL = String.format(Configs.OpenWeatherAPI.URL, city, this.token);
             HttpClient client = HttpClient.newHttpClient();
@@ -49,6 +51,7 @@ public class OpenWeatherAPI {
             String rawWeather = response.body();
             return this.processRawWeather(rawWeather);
         } catch (IOException | InterruptedException | IllegalArgumentException exception){
+            this.logger.log(Level.WARNING, Configs.OpenWeatherAPI.loggingErrorMessage, exception);
             return this.createFailureWeather(Configs.OpenWeatherAPI.Error.messageText);
         }
     }
@@ -78,11 +81,11 @@ public class OpenWeatherAPI {
      * @return status code of getting weather info
      */
     private int getStatusCode(Map<String, Object> weather) {
-        // TODO add logging
         try {
             // Using this syntax to get int type instead of Object
             return (int) weather.get(Configs.OpenWeatherAPI.statusKey);
-        } catch (ClassCastException e) {
+        } catch (ClassCastException exception) {
+            this.logger.log(Level.WARNING, Configs.OpenWeatherAPI.loggingErrorMessage, exception);
             return Configs.OpenWeatherAPI.Error.code;
         }
     }
@@ -95,10 +98,10 @@ public class OpenWeatherAPI {
      * @return message with error info
      */
     private String getMessage(Map<String, Object> weather) {
-        // TODO add logging
         try {
             return (String) weather.get(Configs.OpenWeatherAPI.Error.messageKey);
-        } catch (ClassCastException e) {
+        } catch (ClassCastException exception) {
+            this.logger.log(Level.WARNING, Configs.OpenWeatherAPI.loggingErrorMessage, exception);
             return Configs.OpenWeatherAPI.Error.messageText;
         }
     }

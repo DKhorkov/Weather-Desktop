@@ -88,6 +88,8 @@ public final class Configs {
     public static final class OpenWeatherAPI {
         public static String URL = "https://api.openweathermap.org/data/2.5/weather?q=%s&appid=%s&units=metric";
         public static String tokenEnvName = "openWeatherToken";
+        public static String loggingErrorMessage = "Error occurred during process of getting " +
+                "or parsing response from Open Weather API:";
 
         public static String statusKey = "cod";
         public static int successStatusCode = 200;
