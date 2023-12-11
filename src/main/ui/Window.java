@@ -1,6 +1,6 @@
-package ui;
+package main.ui;
 
-import configs.Configs;
+import main.configs.Configs;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,14 +21,14 @@ public class Window extends JFrame {
 
     public Window(String title) {
         super(title);  // setting title of our Window
-        this.setupWindow();
+        this.setUpWindow();
         this.run();
     }
 
     /**
      * Configures main UI window with objects.
      */
-    private void setupWindow() {
+    private void setUpWindow() {
         // Setting size and position of window
         super.setBounds(
                 Configs.Window.Bounds.x,

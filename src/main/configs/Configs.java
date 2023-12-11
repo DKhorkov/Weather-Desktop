@@ -1,10 +1,10 @@
-package configs;
+package main.configs;
 
 
 import java.awt.*;
 
 /**
- *  Represents all configs for "Weather Desktop" application.
+ *  Represents all main.configs for "Weather Desktop" application.
  */
 public final class Configs {
 

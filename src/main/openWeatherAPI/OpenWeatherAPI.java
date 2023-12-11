@@ -1,6 +1,6 @@
-package openWeatherAPI;
+package main.openWeatherAPI;
 
-import configs.Configs;
+import main.configs.Configs;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.json.JSONObject;
 

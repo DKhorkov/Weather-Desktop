@@ -1,8 +1,10 @@
-import configs.Configs;
-import ui.Window;
+package main;
+
+import main.configs.Configs;
+import main.ui.Window;
 
 /**
- * Main class, which activates and run Weather Desktop application.
+ * main.Main class, which activates and run Weather Desktop application.
  */
 public class Main {
     public static void main(String[] args) {

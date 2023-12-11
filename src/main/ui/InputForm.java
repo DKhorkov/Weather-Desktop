@@ -1,7 +1,7 @@
-package ui;
+package main.ui;
 
-import configs.Configs;
-import openWeatherAPI.OpenWeatherAPI;
+import main.configs.Configs;
+import main.openWeatherAPI.OpenWeatherAPI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,10 +21,10 @@ public class InputForm extends JFrame {
 
     public InputForm() {
         this.inputFormContainer.setBackground(Color.BLACK);
-        this.setupInputForm();
-        this.setupLabel();
-        this.setupTextField();
-        this.setupSearchButton();
+        this.setUpInputForm();
+        this.setUpLabel();
+        this.setUpTextField();
+        this.setUpSearchButton();
     }
 
     /**
@@ -38,7 +38,7 @@ public class InputForm extends JFrame {
     /**
      * Configures Input Form UI.
      */
-    private void setupInputForm() {
+    private void setUpInputForm() {
         this.inputFormContainer.setLayout(
                 new GridLayout(
                         Configs.InputForm.GridLayout.rows,
@@ -52,7 +52,7 @@ public class InputForm extends JFrame {
     /**
      * Configures text label on input form with information for user.
      */
-    private void setupLabel() {
+    private void setUpLabel() {
         JLabel label = new JLabel(Configs.InputForm.Label.text);
         label.setForeground(Color.WHITE);
         label.setBounds(
@@ -68,7 +68,7 @@ public class InputForm extends JFrame {
     /**
      * Configures text field, in which city name will be set.
      */
-    private void setupTextField() {
+    private void setUpTextField() {
         this.textField = new JTextField(Configs.InputForm.TextField.columnsCount);
         this.textField.setBounds(
                 Configs.InputForm.TextField.Bounds.x,
@@ -83,7 +83,7 @@ public class InputForm extends JFrame {
     /**
      * Configures "submit"-button, which starts logic for getting weather of chosen city.
      */
-    private void setupSearchButton() {
+    private void setUpSearchButton() {
         JButton selectButton = new JButton(Configs.InputForm.SelectButton.name);
         selectButton.setBackground(Color.YELLOW);
         selectButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
